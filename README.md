@@ -1,7 +1,11 @@
 # Motion Flow Matching for Human Motion Synthesis and Editing
 
 **Arxiv**
+1.flow/flow_matching_class.py(add the optimization framework originated from D-flow of x0 in function p_sample_loop())
 
+2.flow/flow_matching_class.py(add the truncated guassian originated from reflected flow matching in function training_losses() when training the boundary rotation data)
+
+3.data_loaders/humanml/motion_loaders/comp_v6_model_dataset.py(add visualize when evaluating)
 
 [![Website](doc/badges/badge-website.svg)](https://taohu.me/mfm)
 [![Paper](https://img.shields.io/badge/arXiv-PDF-b31b1b)](https://arxiv.org/abs/2312.08895)
