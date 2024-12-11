@@ -1,0 +1,61 @@
+第一部分 
+给到可逆OT的数据集
+71 data_loader2 = get_dataset_loader(
+    name= "humanml",
+    batch_size=cfg.batch_size,
+    num_frames=cfg.training.num_frames,
+    num_workers=cfg.num_workers,
+    is_debug=cfg.is_debug,
+)
+带入类中
+35 TrainLoop_Flow(
+    cfg, train_platform, model, dynamic, data_loader, data_loader2, fixed_noise
+).run_loop()
+
+第二部分 train_loop_flow.py
+外层定义data_loader2
+35 def __init__(self, cfg, train_platform, model, dynamic, data_loader, data_loader2, fixed_noise):
+使用dataloader2
+44 self.dataloader_train2 = data_loader2 
+取出dataloader2
+174 for (motion_feat, model_kwargs), (motion_feat2, model_kwargs2) in tqdm(zip(self.dataloader_train, self.dataloader_train2)):
+使用motion_feat2
+188 self.run_step(motion_feat, motion_feat2, model_kwargs)
+使用batch2数据
+345 def forward_backward(self, batch, batch2, cond): #batch就是数据
+353 micro2 = batch2
+带入传播函数
+359 compute_losses = functools.partial(
+    self.dynamic.training_losses,
+    self.ddp_model,
+    micro,
+    micro2,
+    t=None,
+    model_kwargs=micro_cond,
+    dataset=self.dataloader_train.dataset,
+)
+
+第三部分 flow matching class.py
+
+
+修改training_loss函数中的noise
+549
+first_66_features = x_start2.to("cuda")[:, :, :, :66]
+
+# 生成后 130 个特征，使用标准高斯分布
+last_130_features = torch.randn(shape[0], shape[1], shape[2], 130).to("cuda")
+
+# 将前 66 个和后 130 个特征拼接起来
+noise = torch.cat((first_66_features, last_130_features), dim=-1)
+
+502函数定义部分x_start2
+
+修改函数p_sample_loop中的 noise 和 noise_origin
+first_66_features = noise.to("cuda")[:, :, :, :66]
+
+# 生成后 130 个特征，使用标准高斯分布
+last_130_features = torch.randn(shape[0], shape[1], shape[2], 130).to("cuda")
+
+# 将前 66 个和后 130 个特征拼接起来
+noise_origin = torch.cat((first_66_features, last_130_features), dim=-1)
+

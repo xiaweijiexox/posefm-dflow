@@ -1,0 +1,110 @@
+cfg:
+  model:
+    arch: trans_enc
+    emb_trans_dec: false
+    layers: 8
+    latent_dim: 512
+    ff_size: 1024
+    num_heads: 4
+    cond_mask_prob: 0.1
+    lambda_rcxyz: 0.0
+    lambda_vel: 0.0
+    lambda_fc: 0.0
+    unconstrained: false
+    text_emebed: clip
+  training:
+    save_dir: ${log_dir}
+    overwrite: 1
+    train_platform_type: Wandb_ClearML_Platform
+    resume_checkpoint: ''
+    num_steps: 500000
+    num_frames: 60
+    lr: 0.0001
+    weight_decay: 0.0
+    lr_anneal_steps: 0
+    log_interval: 1000
+    save_interval: 10000
+    eval_batch_size: 32
+    eval_split: test
+    eval_during_training: 0
+    eval_rep_times: 3
+    eval_num_samples: 1000
+  num_frames: null
+  jointstype: null
+  vertstrans: null
+  unconstrained: null
+  num_classes: null
+  nfeats: null
+  njoint: null
+  num_seeds: 2
+  cuda: true
+  device: 0
+  seed: 10
+  batch_size: 64
+  is_vis: true
+  dataset: kit
+  num_workers: 2
+  dynamic: flow
+  noise_schedule: cosine
+  diffusion_steps_sample: 1000
+  use_ddim: false
+  sigma_small: true
+  ode_kwargs:
+    method: euler
+    atol: 1.0e-05
+    rtol: 1.0e-05
+    step_size: 0.01
+    edit_till: 1.0
+    return_x_est: false
+    return_x_est_num: null
+  model_path: ''
+  output_dir: ${log_dir}/samples
+  num_samples: 10
+  num_repetitions: 1
+  guidance_param: 2.5
+  edit_mode: null
+  text_condition: null
+  prefix_end: 0.25
+  suffix_start: 0.75
+  edit_alter_prompts: null
+  motion_length: 6.0
+  input_text: ./assets/example_text_prompts.txt
+  action_file: ''
+  text_prompt: ''
+  action_name: ''
+  eval_mode: wo_mm
+  name: kit_trans_enc_512_tru2_66_gpu_true
+  is_debug: 0
+  logdir: logs
+  wandb:
+    name: ${name}
+    project: motionfm
+    entity: dpose-team
+    reinit: false
+    group: DDP
+  log_dir: ./outputs/${name}/${now:%d-%m-%Y}/${now:%H-%M-%S}
+  ckpt_dir: ${log_dir}/ckpts
+  python_version: ${python_version:}
+dataset: kit
+cond_mode: text
+batch_size: 64
+microbatch: 64
+lr: 0.0001
+log_interval: 1000
+save_interval: 10000
+resume_checkpoint: ''
+weight_decay: 0.0
+lr_anneal_steps: 0
+step: 0
+resume_step: 0
+global_batch: 64
+num_steps: 500000
+num_epochs: 7353
+use_fp16: false
+fp16_scale_growth: 0.001
+save_dir: ./outputs/kit_trans_enc_512_tru2_66_gpu_true/23-11-2024/19-38-17
+overwrite: 1
+eval_wrapper: null
+eval_data: null
+eval_gt_data: null
+use_ddp: true

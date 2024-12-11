@@ -1,0 +1,12 @@
+训练
+accelerate launch train.py name=kit_trans_enc_512_tru2_66_gpu_true dataset=kit training.eval_during_training=0 model.cond_mask_prob=0.1 guidance_param=2.5  training.overwrite=1 training.log_interval=1000 training.num_steps=500000 num_workers=2 input_text=./assets/example_text_prompts.txt   is_debug=0
+评估
+HYDRA_FULL_ERROR=1 python eval_humanml.py dataset=kit dynamic=flow model_path=/home/tsinghuaair/xwj/motionfm-main/outputs/kit_trans_enc_512_norm_gpu/23-08-2024/12-29-06/model000200000.pt guidance_param=2.5 eval_mode=mm_short ode_kwargs.step_size=0.02 is_debug=0
+
+可视化
+python -m visualize.render_mesh --input_path demo_data/humanml_trans_enc_512/samples_humanml_trans_enc_512_000475000_seed10_example_text_prompts/sample00_rep00.mp4
+生成
+HYDRA_FULL_ERROR=1 python generate.py   dataset=kit model_path=/home/tsinghuaair/xwj/motionfm-main/outputs/kit_trans_enc_512_tru2_66_gpu_true/21-11-2024/07-31-49/model000400000.pt  input_text=/home/tsinghuaair/xwj/motionfm-main/assets/example_text_prompts.txt 
+
+编辑
+python edit.py dataset=kit --model_path=/home/tsinghuaair/xwj/motionfm-main/outputs/kit_trans_enc_512_norm_gpu/23-08-2024/12-29-06/model000200000.pt --edit_mode in_between
